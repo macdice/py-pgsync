@@ -1,4 +1,4 @@
-# PgSyncPool
+# DemoSyncPool
 #
 # This is proof-of-concept throw-away code for experimentation only!  It
 # demonstrates the sort of control flow that might be required to make use of
@@ -11,16 +11,16 @@
 # test-synchronous-replay.sh (from the above thread).  To test state
 # transition behaviour, try pausing replay on a standby.
 #
+# The idea is simply to blacklist servers that raise 'synchronous_replay not
+# available' errors for a short time, and retry whole transactions that fail
+# in that way.  Then apply whatever load balancing policy you like on set of
+# non-blacklisted servers.
+#
 # The basic conditions required to make this sort of scheme work seem to be:
 #
 #  1.  Units of work run in framework-managed transactions
 #  2.  Framework can retry whole units of work automatically
 #  3.  Units of work can be declared to be read-only
-#
-# The idea is simply to blacklist servers that raise 'synchronous_replay not
-# available' errors for a short time, and retry whole transactions that fail
-# in that way.  Then apply whatever load balancing policy you like on set of
-# non-blacklisted servers.
 #
 # Spring, J2EE and Django seem to fit the bill, where "units of work"
 # correspond to handlers for requests from clients, but I haven't yet explored
