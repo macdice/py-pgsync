@@ -17,6 +17,11 @@
 #  2.  Framework can retry whole units of work automatically
 #  3.  Units of work can be declared to be read-only
 #
+# The idea is simply to blacklist servers that raise 'synchronous_replay not
+# available' errors for a short time, and retry whole transactions that fail
+# in that way.  Then apply whatever load balancing policy you like on set of
+# non-blacklisted servers.
+#
 # Spring, J2EE and Django seem to fit the bill, where "units of work"
 # correspond to handlers for requests from clients, but I haven't yet explored
 # the details and my Java is extremely rusty...  So I'm going to present this
