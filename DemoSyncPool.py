@@ -65,6 +65,7 @@ class PgSyncPool:
                 connection = PgSyncPool.Connection(psycopg2.connect(self.url), self)
                 cursor = connection.connection.cursor()
                 cursor.execute("SET synchronous_replay = on")
+                connection.connection.commit()
             self.busy = self.busy + 1
             return connection
 
